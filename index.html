@@ -239,14 +239,14 @@
   <!-- =========================================
        CONTENEDOR PRINCIPAL
        ========================================= -->
-  <div class="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 font-sans relative" id="app-container">
+  <div class="h-screen flex flex-col items-center justify-center p-4 font-sans relative" id="app-container">
     
     <!-- PANTALLA DE INICIO (LANDING PAGE) -->
     <div id="landing-page" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/50 backdrop-blur-2xl transition-all duration-700 ease-in-out p-4 opacity-100">
       
       <div class="tekila-logo-wrapper parallax-element mb-12 z-10 select-none cursor-pointer relative group flex justify-center w-full">
-        <img src="https://i.imgur.com/okjxO83.png" alt="TEKILA Logo Central" class="w-full max-w-[320px] md:max-w-[500px] h-auto object-contain transition-all duration-500 drop-shadow-[0_0_20px_rgba(255,215,0,0.3)] group-hover:drop-shadow-[0_0_35px_rgba(255,215,0,0.5)]" />
-        <div class="absolute inset-0 pointer-events-none tekila-shine-overlay max-w-[320px] md:max-w-[500px] mx-auto w-full"></div>
+        <img src="https://i.imgur.com/okjxO83.png" alt="TEKILA Logo Central" class="w-full max-w-[320px] md:max-w-[460px] h-auto object-contain transition-all duration-500 drop-shadow-[0_0_20px_rgba(255,215,0,0.3)] group-hover:drop-shadow-[0_0_35px_rgba(255,215,0,0.5)]" />
+        <div class="absolute inset-0 pointer-events-none tekila-shine-overlay max-w-[320px] md:max-w-[460px] mx-auto w-full"></div>
       </div>
 
       <button id="btn-enter" class="relative overflow-hidden glass-panel px-12 py-4 rounded-[1.5rem] flex items-center justify-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.05] active:scale-[0.97] hover:shadow-[0_0_30px_rgba(212,175,55,0.4),_inset_0_0_15px_rgba(212,175,55,0.2)] hover:bg-white/10 hover:border-[#D4AF37]/60 border border-[#D4AF37]/30 bg-white/5 group z-10">
@@ -257,73 +257,83 @@
     </div>
 
     <!-- MAIN DASHBOARD -->
-    <div id="main-dashboard" class="w-full flex flex-col items-center z-20 hidden-state transition-all duration-700 w-full max-w-4xl">
+    <!-- -mt-8 a -mt-16 SUBE VISIBLEMENTE EL CONTENEDOR PRINCIPAL -->
+    <div id="main-dashboard" class="w-full flex flex-col items-center z-20 hidden-state transition-all duration-700 max-w-4xl -mt-12 md:-mt-16">
       
-      <div class="tekila-logo-wrapper parallax-element mb-6 select-none cursor-pointer relative group animate-entrada">
-        <img src="https://i.imgur.com/okjxO83.png" alt="TEKILA Logo" class="w-full max-w-[280px] md:max-w-[420px] h-auto object-contain transition-all duration-500 drop-shadow-[0_0_10px_rgba(255,215,0,0.15)] group-hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.4)]" />
+      <!-- mb-2 REDUCE SIGNIFICATIVAMENTE EL ESPACIO ENTRE EL LOGO Y EL CARD -->
+      <div class="tekila-logo-wrapper parallax-element mb-2 select-none cursor-pointer relative group animate-entrada">
+        <img src="https://i.imgur.com/okjxO83.png" alt="TEKILA Logo" class="w-full max-w-[240px] md:max-w-[380px] h-auto object-contain transition-all duration-500 drop-shadow-[0_0_10px_rgba(255,215,0,0.15)] group-hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.4)]" />
         <div class="absolute inset-0 pointer-events-none tekila-shine-overlay"></div>
       </div>
 
-      <div class="glass-panel w-full rounded-[2.5rem] p-6 md:p-8 flex flex-col gap-6 relative transition-all duration-500 hover:shadow-[0_15px_50px_rgba(0,0,0,0.6),_0_0_30px_rgba(212,175,55,0.12),_inset_0_0_0_1px_rgba(212,175,55,0.15)] animate-entrada" style="animation-delay: 0.1s;">
+      <div class="glass-panel w-full rounded-[2.5rem] p-5 md:p-6 flex flex-col gap-5 relative transition-all duration-500 hover:shadow-[0_15px_50px_rgba(0,0,0,0.6),_0_0_30px_rgba(212,175,55,0.12),_inset_0_0_0_1px_rgba(212,175,55,0.15)] animate-entrada" style="animation-delay: 0.1s;">
         
         <!-- Fila Superior -->
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 md:gap-6">
           
           <!-- Reloj -->
-          <div class="glass-panel px-8 py-6 rounded-[2rem] flex flex-col items-center justify-center min-w-[200px] hover:bg-white/5 hover:shadow-[0_0_20px_rgba(212,175,55,0.1),_inset_0_0_0_1px_rgba(212,175,55,0.08)] transition-all duration-500 w-full md:w-auto">
-            <div id="clock-time" class="text-4xl font-light gold-text-animated tracking-wider flex items-baseline gap-1 transition-opacity duration-300">
+          <div class="glass-panel px-6 md:px-8 py-5 md:py-6 rounded-[2rem] flex flex-col items-center justify-center min-w-[180px] md:min-w-[200px] hover:bg-white/5 hover:shadow-[0_0_20px_rgba(212,175,55,0.1),_inset_0_0_0_1px_rgba(212,175,55,0.08)] transition-all duration-500 w-full md:w-auto">
+            <div id="clock-time" class="text-3xl md:text-4xl font-light gold-text-animated tracking-wider flex items-baseline gap-1 transition-opacity duration-300">
               <!-- Renderizado por JS -->
             </div>
-            <div id="clock-date" class="text-xs gold-text-animated opacity-60 mt-2 tracking-widest uppercase">
+            <div id="clock-date" class="text-[10px] md:text-xs gold-text-animated opacity-60 mt-1 md:mt-2 tracking-widest uppercase">
               <!-- Renderizado por JS -->
             </div>
           </div>
 
           <!-- Ecualizador -->
-          <div class="glass-panel px-10 py-6 rounded-[2rem] flex-1 flex flex-col items-center justify-center h-full min-h-[120px] relative pointer-events-none hover:bg-white/5 hover:shadow-[0_0_20px_rgba(212,175,55,0.1),_inset_0_0_0_1px_rgba(212,175,55,0.08)] transition-all duration-500 w-full md:w-auto">
-            <div id="eq-container" class="flex items-end justify-center space-x-1.5 h-12 w-full relative">
+          <div class="glass-panel px-8 md:px-10 py-5 md:py-6 rounded-[2rem] flex-1 flex flex-col items-center justify-center h-full min-h-[100px] md:min-h-[120px] relative pointer-events-none hover:bg-white/5 hover:shadow-[0_0_20px_rgba(212,175,55,0.1),_inset_0_0_0_1px_rgba(212,175,55,0.08)] transition-all duration-500 w-full md:w-auto">
+            <div id="eq-container" class="flex items-end justify-center space-x-1.5 h-10 md:h-12 w-full relative">
               <!-- Barras generadas por JS -->
             </div>
-            <div class="relative h-4 w-full mt-3 flex justify-center items-center overflow-hidden">
-               <span id="status-playing" class="absolute text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 transition-all duration-500 transform opacity-0 translate-y-4">
+            <div class="relative h-4 w-full mt-2 md:mt-3 flex justify-center items-center overflow-hidden">
+               <span id="status-playing" class="absolute text-[9px] md:text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 transition-all duration-500 transform opacity-0 translate-y-4">
                  <!-- Icono Music -->
                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 5px rgba(212,175,55,0.5))"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
                  <span class="gold-text-animated">Playing</span>
                </span>
-               <span id="status-paused" class="absolute text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 transition-all duration-500 transform opacity-100 translate-y-0">
+               <span id="status-paused" class="absolute text-[9px] md:text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 transition-all duration-500 transform opacity-100 translate-y-0">
                  <span class="gold-text-animated">Paused</span>
                </span>
             </div>
           </div>
 
-          <!-- Botón Calendario -->
-          <button id="btn-toggle-calendar" class="glass-panel w-[120px] h-[120px] rounded-[2rem] flex flex-col items-center justify-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group hover:scale-[0.98] active:scale-[0.95] hover:bg-white/5 hover:border-[#D4AF37]/20 hover:shadow-[0_0_20px_rgba(212,175,55,0.15)]">
-            <!-- Icono Calendar -->
-            <svg class="text-[#D4AF37] group-hover:text-[#FFDF00] group-hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.5)] transition-all duration-400 group-hover:scale-110" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-            <span class="text-xs gold-text-animated opacity-70 font-medium tracking-wider group-hover:opacity-100 transition-opacity">CALENDAR</span>
-          </button>
+          <!-- CONTENEDOR DEL BOTON DE CALENDARIO Y CALENDARIO INLINE -->
+          <div class="relative z-50 flex flex-col items-center md:items-end w-full md:w-auto">
+            <button id="btn-toggle-calendar" class="glass-panel w-[100px] h-[100px] md:w-[120px] md:h-[120px] rounded-[2rem] flex flex-col items-center justify-center gap-2 md:gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group hover:scale-[0.98] active:scale-[0.95] hover:bg-white/5 hover:border-[#D4AF37]/20 hover:shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+              <svg class="text-[#D4AF37] group-hover:text-[#FFDF00] group-hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.5)] transition-all duration-400 group-hover:scale-110 w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span class="text-[10px] md:text-xs gold-text-animated opacity-70 font-medium tracking-wider group-hover:opacity-100 transition-opacity">CALENDAR</span>
+            </button>
+            
+            <!-- CALENDARIO INLINE (WIDGET COMPACTO) -->
+            <div id="inline-calendar-panel" class="absolute top-[110%] right-0 md:right-auto glass-panel p-4 rounded-[1.5rem] w-[260px] opacity-0 pointer-events-none translate-y-[-10px] transition-all duration-300 shadow-[0_20px_40px_rgba(0,0,0,0.5)]">
+              <div id="calendar-content">
+                <!-- Renderizado por JS -->
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Fila Inferior (Reproductor) -->
-        <div class="glass-panel rounded-[2rem] p-6 flex flex-col gap-4 mt-2 border-t border-[#D4AF37]/15 hover:shadow-[0_5px_30px_rgba(0,0,0,0.5),_0_0_20px_rgba(212,175,55,0.15),_inset_0_0_0_1px_rgba(212,175,55,0.1)] transition-all duration-500">
-          <div class="flex flex-col md:flex-row items-center gap-6">
+        <div class="glass-panel rounded-[2rem] p-5 md:p-6 flex flex-col gap-4 border-t border-[#D4AF37]/15 hover:shadow-[0_5px_30px_rgba(0,0,0,0.5),_0_0_20px_rgba(212,175,55,0.15),_inset_0_0_0_1px_rgba(212,175,55,0.1)] transition-all duration-500">
+          <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
             
-            <button id="btn-play-pause" class="w-16 h-16 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#8a6d20] flex items-center justify-center text-black transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] flex-shrink-0 hover:brightness-110 active:scale-[0.93] paused-pulse">
+            <button id="btn-play-pause" class="w-14 h-14 md:w-16 md:h-16 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#8a6d20] flex items-center justify-center text-black transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] flex-shrink-0 hover:brightness-110 active:scale-[0.93] paused-pulse">
               <span id="icon-play" class="ml-1">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
               </span>
               <span id="icon-pause" class="hidden">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
               </span>
             </button>
 
             <div class="flex-1 w-full flex flex-col gap-2 overflow-hidden">
               <div class="flex justify-between items-center text-xs font-medium tracking-wide transition-colors duration-300 w-full gap-2">
-                <span id="time-current" class="gold-text-animated whitespace-nowrap opacity-60">0:00</span>
-                <span id="song-title" class="text-[10px] md:text-xs tracking-widest uppercase transition-all duration-300 gold-text-animated truncate flex-1 text-center px-1 opacity-60" title="Phil Collins - Another Day In Paradise">
+                <span id="time-current" class="gold-text-animated whitespace-nowrap opacity-60 text-[10px] md:text-xs">0:00</span>
+                <span id="song-title" class="text-[9px] md:text-xs tracking-widest uppercase transition-all duration-300 gold-text-animated truncate flex-1 text-center px-1 opacity-60" title="Phil Collins - Another Day In Paradise">
                   Phil Collins - Another Day In Paradise
                 </span>
-                <span id="time-total" class="gold-text-animated whitespace-nowrap opacity-60">0:00</span>
+                <span id="time-total" class="gold-text-animated whitespace-nowrap opacity-60 text-[10px] md:text-xs">0:00</span>
               </div>
               <div class="relative w-full flex items-center h-4 group">
                 <input id="seek-bar" type="range" min="0" max="100" value="0" class="w-full absolute z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer" />
@@ -333,38 +343,25 @@
               </div>
             </div>
 
-            <div class="flex items-center justify-center md:justify-start gap-3 w-full md:w-auto md:min-w-[140px] pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-white/5 pl-0 md:pl-4 mt-2 md:mt-0">
+            <div class="flex items-center justify-center md:justify-start gap-3 w-full md:w-auto md:min-w-[140px] pt-3 md:pt-0 border-t md:border-t-0 md:border-l border-white/5 pl-0 md:pl-4 mt-1 md:mt-0">
               <button id="btn-mute" class="text-gray-400 hover:text-[#D4AF37] hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]">
                 <span id="icon-vol-up">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
                 </span>
                 <span id="icon-vol-muted" class="hidden">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
                 </span>
               </button>
-              <input id="volume-bar" type="range" min="0" max="1" step="0.01" value="0.7" class="w-full max-w-[120px] md:w-24 cursor-pointer" />
+              <input id="volume-bar" type="range" min="0" max="1" step="0.01" value="0.7" class="w-full max-w-[100px] md:w-24 cursor-pointer" />
             </div>
           </div>
         </div>
 
       </div>
 
-      <!-- OVERLAY CALENDARIO -->
-      <div id="calendar-wrapper" class="hidden-state">
-        <div id="calendar-backdrop" class="fixed inset-0 z-40 bg-black/40 backdrop-blur-md transition-opacity duration-500 ease-out opacity-0"></div>
-        <div id="calendar-panel" class="fixed md:absolute top-1/2 left-1/2 md:top-6 md:right-6 md:left-auto md:translate-x-0 md:translate-y-0 -translate-x-1/2 -translate-y-1/2 z-50 glass-panel p-6 rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.6),_0_0_20px_rgba(212,175,55,0.15),_inset_0_0_0_1px_rgba(212,175,55,0.15)] w-[calc(100vw-2rem)] max-w-[320px] md:w-[300px] transition-all duration-500 ease-out opacity-0 scale-95 md:translate-y-[-20px]">
-          <button id="btn-close-calendar" class="absolute top-4 right-4 text-gray-400 hover:text-[#D4AF37] transition-all duration-300 hover:bg-white/10 p-1.5 rounded-full hover:scale-110 active:scale-90 hover:shadow-[0_0_10px_rgba(212,175,55,0.2)]">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </button>
-          <div id="calendar-content" class="mt-4">
-            <!-- Renderizado por JS -->
-          </div>
-        </div>
-      </div>
-
-      <!-- FIRMA -->
-      <div class="mt-8 z-10 animate-entrada text-center" style="animation-delay: 0.2s;">
-        <p class="text-[9px] md:text-[10px] tracking-[0.4em] text-white/20 hover:text-[#D4AF37]/80 hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] transition-all duration-500 cursor-default uppercase font-light">
+      <!-- FIRMA REDUCIDA PARA VISIBILIDAD -->
+      <div class="mt-4 z-10 animate-entrada text-center" style="animation-delay: 0.2s;">
+        <p class="text-[9px] tracking-[0.4em] text-white/20 hover:text-[#D4AF37]/80 hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] transition-all duration-500 cursor-default uppercase font-light">
           ©2026 XATSPACE DESIGN EAM96
         </p>
       </div>
@@ -521,7 +518,6 @@
       let isMuted = false;
 
       btnEnter.addEventListener('click', () => {
-        // Reproducir audio (El evento user-interaction permite autoplay)
         bgAudio.volume = 0.7;
         bgAudio.play().then(() => {
           isPlaying = true;
@@ -529,16 +525,14 @@
           updateEqUI();
         }).catch(e => console.log("Audio requires interaction or correct path.", e));
 
-        // Fade out
         landingPage.style.opacity = '0';
         setTimeout(() => {
           landingPage.classList.add('hidden-state');
           mainDashboard.classList.remove('hidden-state');
           
-          // Reiniciar animaciones de entrada en el dashboard
           document.querySelectorAll('.animate-entrada').forEach(el => {
             el.style.animation = 'none';
-            el.offsetHeight; // Reflow
+            el.offsetHeight; 
             el.style.animation = null;
           });
         }, 700);
@@ -693,7 +687,7 @@
 
       btnMute.addEventListener('click', () => {
         isMuted = !isMuted;
-        bgAudio.volume = isMuted ? 0 : volumeBar.value || 0.7; // Restore last valid volume or default
+        bgAudio.volume = isMuted ? 0 : volumeBar.value || 0.7; 
         updateVolumeUI();
       });
 
@@ -704,16 +698,14 @@
       });
 
       /* =======================================
-         8. CALENDARIO OVERLAY
+         8. CALENDARIO INLINE COMPACTO
          ======================================= */
       const btnToggleCalendar = document.getElementById('btn-toggle-calendar');
-      const calendarWrapper = document.getElementById('calendar-wrapper');
-      const calendarBackdrop = document.getElementById('calendar-backdrop');
-      const calendarPanel = document.getElementById('calendar-panel');
-      const btnCloseCalendar = document.getElementById('btn-close-calendar');
+      const inlineCalendarPanel = document.getElementById('inline-calendar-panel');
       const calendarContent = document.getElementById('calendar-content');
       
       let calDate = new Date();
+      let isCalendarOpen = false;
 
       const renderCalendarContent = () => {
         const month = calDate.getMonth();
@@ -726,68 +718,75 @@
         const today = new Date();
 
         let html = `
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-3">
             <div class="flex justify-between items-center text-[#D4AF37]">
               <button id="cal-prev" class="p-1 hover:bg-white/10 rounded-full transition-all duration-300 active:scale-90 hover:shadow-[0_0_8px_rgba(212,175,55,0.2)] will-change-transform">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
               </button>
-              <span class="font-semibold text-lg gold-text-animated">${monthNames[month]} ${year}</span>
+              <span class="font-semibold text-sm gold-text-animated">${monthNames[month]} ${year}</span>
               <button id="cal-next" class="p-1 hover:bg-white/10 rounded-full transition-all duration-300 active:scale-90 hover:shadow-[0_0_8px_rgba(212,175,55,0.2)] will-change-transform">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </button>
             </div>
             <div class="grid grid-cols-7 gap-1">
         `;
 
-        dayNames.forEach(day => { html += `<div class="text-xs text-center gold-text-animated opacity-60 font-medium pb-2">${day}</div>`; });
-        for (let i = 0; i < firstDay; i++) { html += `<div class="p-2"></div>`; }
+        dayNames.forEach(day => { html += `<div class="text-[10px] text-center gold-text-animated opacity-60 font-medium pb-1">${day}</div>`; });
+        for (let i = 0; i < firstDay; i++) { html += `<div class="p-1.5"></div>`; }
         for (let d = 1; d <= daysInMonth; d++) {
           const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
           const classes = isToday 
             ? 'bg-gradient-to-tr from-[#D4AF37] to-[#FFDF00] text-black font-bold shadow-[0_0_12px_rgba(212,175,55,0.4)]' 
             : 'gold-text-animated opacity-70 hover:opacity-100 hover:bg-white/10 hover:shadow-[0_0_10px_rgba(212,175,55,0.15)]';
-          html += `<div class="p-2 text-center text-sm rounded-full transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-110 active:scale-95 will-change-transform ${classes}">${d}</div>`;
+          html += `<div class="p-1.5 text-center text-xs rounded-full transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-110 active:scale-95 will-change-transform ${classes}">${d}</div>`;
         }
         
         html += `</div></div>`;
         calendarContent.innerHTML = html;
 
-        document.getElementById('cal-prev').addEventListener('click', () => {
+        document.getElementById('cal-prev').addEventListener('click', (e) => {
+          e.stopPropagation();
           calDate.setMonth(calDate.getMonth() - 1);
           renderCalendarContent();
         });
-        document.getElementById('cal-next').addEventListener('click', () => {
+        document.getElementById('cal-next').addEventListener('click', (e) => {
+          e.stopPropagation();
           calDate.setMonth(calDate.getMonth() + 1);
           renderCalendarContent();
         });
       };
 
       const openCalendar = () => {
-        calDate = new Date(); // reset to current month on open
+        calDate = new Date(); 
         renderCalendarContent();
-        calendarWrapper.classList.remove('hidden-state');
-        
-        // Trigger animations
-        requestAnimationFrame(() => {
-          calendarBackdrop.style.opacity = '1';
-          calendarPanel.style.opacity = '1';
-          calendarPanel.style.transform = 'translate(-50%, -50%) scale(1)';
-        });
+        inlineCalendarPanel.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        inlineCalendarPanel.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
       };
 
       const closeCalendar = () => {
-        calendarBackdrop.style.opacity = '0';
-        calendarPanel.style.opacity = '0';
-        calendarPanel.style.transform = 'translate(-50%, calc(-50% - 20px)) scale(0.95)';
-        
-        setTimeout(() => {
-          calendarWrapper.classList.add('hidden-state');
-        }, 500);
+        inlineCalendarPanel.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+        inlineCalendarPanel.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
       };
 
-      btnToggleCalendar.addEventListener('click', openCalendar);
-      btnCloseCalendar.addEventListener('click', closeCalendar);
-      calendarBackdrop.addEventListener('click', closeCalendar);
+      btnToggleCalendar.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evitar que el clic se propague al document y lo cierre inmediatamente
+        isCalendarOpen = !isCalendarOpen;
+        if (isCalendarOpen) openCalendar();
+        else closeCalendar();
+      });
+
+      // Cerrar al hacer clic fuera del panel o del botón
+      document.addEventListener('click', (e) => {
+        if (isCalendarOpen && !inlineCalendarPanel.contains(e.target) && !btnToggleCalendar.contains(e.target)) {
+          isCalendarOpen = false;
+          closeCalendar();
+        }
+      });
+
+      // Prevenir que clics dentro del calendario lo cierren
+      inlineCalendarPanel.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
 
     });
   </script>
