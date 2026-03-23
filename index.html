@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tekila Dashboard - Premium</title>
+  
+  <!-- Tailwind CSS por CDN para mantener el grid y responsividad exactos -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* =========================================
+       1. CURSOR GLOBAL & RESET
+       ========================================= */
+    * {
+      cursor: url('https://cdn.cursors-4u.net/previews/amber-5c9cde80-32.webp') 32 32, auto !important;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none; /* Prevenir selección de texto accidental */
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #070709;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* =========================================
+       2. TEXTOS DORADOS (WAVE EFFECT)
+       ========================================= */
+    .gold-text-animated {
+      background: linear-gradient(
+        to right, 
+        #AA771C 0%, 
+        #D4AF37 20%, 
+        #FFF3A6 40%, 
+        #FFDF00 50%, 
+        #FFF3A6 60%, 
+        #D4AF37 80%, 
+        #AA771C 100%
+      );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: text-wave-shine 6s linear infinite;
+    }
+
+    @keyframes text-wave-shine {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+
+    /* =========================================
+       3. LOGO PNG SHINE EFFECT
+       ========================================= */
+    .tekila-logo-wrapper {
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+      will-change: transform;
+    }
+
+    .tekila-logo-wrapper:active {
+      transform: scale(0.97) !important;
+    }
+
+    .tekila-shine-overlay {
+      -webkit-mask-image: url('https://i.imgur.com/okjxO83.png');
+      -webkit-mask-size: contain;
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-position: center;
+      mask-image: url('https://i.imgur.com/okjxO83.png');
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      overflow: hidden;
+    }
+
+    .tekila-shine-overlay::after {
+      content: '';
+      position: absolute;
+      top: 0; 
+      left: -150%; 
+      width: 50%; 
+      height: 100%;
+      background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.5), rgba(212, 175, 55, 0.6), transparent);
+      transform: skewX(-25deg);
+      animation: logo-shine 5s cubic-bezier(0.3, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes logo-shine {
+      0% { left: -150%; }
+      35% { left: 200%; }
+      100% { left: 200%; } 
+    }
+
+    /* =========================================
+       4. ANIMACIONES DEL DASHBOARD
+       ========================================= */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(212, 175, 55, 0.03);
+      transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+    
+    @keyframes fade-blur-in {
+      0% { opacity: 0; filter: blur(12px); transform: translateY(15px); }
+      100% { opacity: 1; filter: blur(0); transform: translateY(0); }
+    }
+    
+    .animate-entrada {
+      animation: fade-blur-in 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+      will-change: transform, opacity, filter;
+      opacity: 0; /* Empieza oculto para la animación */
+    }
+
+    @keyframes soft-pulse {
+      0%, 100% { box-shadow: 0 0 15px rgba(212,175,55,0.15); transform: scale(1); }
+      50% { box-shadow: 0 0 25px rgba(212,175,55,0.3); transform: scale(1.02); }
+    }
+
+    .paused-pulse {
+      animation: soft-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes slide-gradient {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+    
+    .progress-gradient {
+      background: linear-gradient(90deg, #8a6d20, #FFF8DC, #8a6d20);
+      background-size: 200% auto;
+      animation: slide-gradient 4s linear infinite;
+    }
+
+    /* ECUALIZADOR */
+    @keyframes eq1 { 0%, 100% { transform: scaleY(0.2); } 30% { transform: scaleY(0.85); } 60% { transform: scaleY(0.4); } 80% { transform: scaleY(1); } }
+    @keyframes eq2 { 0%, 100% { transform: scaleY(0.2); } 20% { transform: scaleY(1); } 50% { transform: scaleY(0.3); } 75% { transform: scaleY(0.9); } }
+    @keyframes eq3 { 0%, 100% { transform: scaleY(0.2); } 40% { transform: scaleY(0.9); } 60% { transform: scaleY(0.25); } 90% { transform: scaleY(0.7); } }
+
+    /* =========================================
+       5. INPUT RANGE (CROSS BROWSER SLIDERS)
+       ========================================= */
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 14px;
+      width: 14px;
+      border-radius: 50%;
+      background: #D4AF37;
+      margin-top: -5px;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+      transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+      will-change: transform;
+    }
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.7);
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      transition: background 0.3s ease;
+    }
+    input[type=range]:hover::-webkit-slider-runnable-track {
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    input[type=range]::-moz-range-thumb {
+      height: 14px;
+      width: 14px;
+      border-radius: 50%;
+      background: #D4AF37;
+      border: none;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+      transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+    }
+    input[type=range]::-moz-range-thumb:hover {
+      transform: scale(1.2);
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.7);
+    }
+    input[type=range]::-moz-range-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      transition: background 0.3s ease;
+    }
+
+    /* Ocultar elementos */
+    .hidden-state {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      visibility: hidden !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================
+       CAPAS DE FONDO CONSTANTES
+       ========================================= -->
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#1a1a1c] to-[#050505] z-0 pointer-events-none"></div>
+
+  <video id="bg-video" autoPlay loop muted playsInline class="absolute inset-0 w-full h-full object-cover opacity-[0.12] z-0 pointer-events-none mix-blend-lighten">
+    <source src="https://cdn.pixabay.com/video/2017/11/12/12916-242532965_large.mp4" type="video/mp4" />
+  </video>
+
+  <div class="absolute inset-0 bg-black/20 z-0 pointer-events-none"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-[radial-gradient(circle_at_center,_rgba(212,175,55,0.04)_0%,_transparent_60%)] pointer-events-none z-0 rounded-full blur-3xl"></div>
+
+  <svg style="display: none;">
+    <filter id="noiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+    </filter>
+  </svg>
+  <div class="fixed inset-0 pointer-events-none z-50 opacity-[0.02]" style="filter: url(#noiseFilter)"></div>
+
+  <canvas id="particles-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- =========================================
+       AUDIO ELEMENT HTML5
+       ========================================= -->
+  <audio id="bg-audio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto"></audio>
+
+  <!-- =========================================
+       CONTENEDOR PRINCIPAL
+       ========================================= -->
+  <div class="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 font-sans relative" id="app-container">
+    
+    <!-- PANTALLA DE INICIO (LANDING PAGE) -->
+    <div id="landing-page" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black/50 backdrop-blur-2xl transition-all duration-700 ease-in-out p-4 opacity-100">
+      
+      <div class="tekila-logo-wrapper parallax-element mb-12 z-10 select-none cursor-pointer relative group flex justify-center w-full">
+        <img src="https://i.imgur.com/okjxO83.png" alt="TEKILA Logo Central" class="w-full max-w-[320px] md:max-w-[500px] h-auto object-contain transition-all duration-500 drop-shadow-[0_0_20px_rgba(255,215,0,0.3)] group-hover:drop-shadow-[0_0_35px_rgba(255,215,0,0.5)]" />
+        <div class="absolute inset-0 pointer-events-none tekila-shine-overlay max-w-[320px] md:max-w-[500px] mx-auto w-full"></div>
+      </div>
+
+      <button id="btn-enter" class="relative overflow-hidden glass-panel px-12 py-4 rounded-[1.5rem] flex items-center justify-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-[1.05] active:scale-[0.97] hover:shadow-[0_0_30px_rgba(212,175,55,0.4),_inset_0_0_15px_rgba(212,175,55,0.2)] hover:bg-white/10 hover:border-[#D4AF37]/60 border border-[#D4AF37]/30 bg-white/5 group z-10">
+        <span class="relative z-10 font-bold tracking-[0.3em] gold-text-animated text-sm md:text-base transition-all duration-300 group-hover:brightness-125">
+          INGRESAR
+        </span>
+      </button>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="main-dashboard" class="w-full flex flex-col items-center z-20 hidden-state transition-all duration-700 w-full max-w-4xl">
+      
+      <div class="tekila-logo-wrapper parallax-element mb-6 select-none cursor-pointer relative group animate-entrada">
+        <img src="https://i.imgur.com/okjxO83.png" alt="TEKILA Logo" class="w-full max-w-[280px] md:max-w-[420px] h-auto object-contain transition-all duration-500 drop-shadow-[0_0_10px_rgba(255,215,0,0.15)] group-hover:drop-shadow-[0_0_20px_rgba(255,215,0,0.4)]" />
+        <div class="absolute inset-0 pointer-events-none tekila-shine-overlay"></div>
+      </div>
+
+      <div class="glass-panel w-full rounded-[2.5rem] p-6 md:p-8 flex flex-col gap-6 relative transition-all duration-500 hover:shadow-[0_15px_50px_rgba(0,0,0,0.6),_0_0_30px_rgba(212,175,55,0.12),_inset_0_0_0_1px_rgba(212,175,55,0.15)] animate-entrada" style="animation-delay: 0.1s;">
+        
+        <!-- Fila Superior -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+          
+          <!-- Reloj -->
+          <div class="glass-panel px-8 py-6 rounded-[2rem] flex flex-col items-center justify-center min-w-[200px] hover:bg-white/5 hover:shadow-[0_0_20px_rgba(212,175,55,0.1),_inset_0_0_0_1px_rgba(212,175,55,0.08)] transition-all duration-500 w-full md:w-auto">
+            <div id="clock-time" class="text-4xl font-light gold-text-animated tracking-wider flex items-baseline gap-1 transition-opacity duration-300">
+              <!-- Renderizado por JS -->
+            </div>
+            <div id="clock-date" class="text-xs gold-text-animated opacity-60 mt-2 tracking-widest uppercase">
+              <!-- Renderizado por JS -->
+            </div>
+          </div>
+
+          <!-- Ecualizador -->
+          <div class="glass-panel px-10 py-6 rounded-[2rem] flex-1 flex flex-col items-center justify-center h-full min-h-[120px] relative pointer-events-none hover:bg-white/5 hover:shadow-[0_0_20px_rgba(212,175,55,0.1),_inset_0_0_0_1px_rgba(212,175,55,0.08)] transition-all duration-500 w-full md:w-auto">
+            <div id="eq-container" class="flex items-end justify-center space-x-1.5 h-12 w-full relative">
+              <!-- Barras generadas por JS -->
+            </div>
+            <div class="relative h-4 w-full mt-3 flex justify-center items-center overflow-hidden">
+               <span id="status-playing" class="absolute text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 transition-all duration-500 transform opacity-0 translate-y-4">
+                 <!-- Icono Music -->
+                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 5px rgba(212,175,55,0.5))"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+                 <span class="gold-text-animated">Playing</span>
+               </span>
+               <span id="status-paused" class="absolute text-[10px] uppercase tracking-[0.3em] flex items-center gap-2 transition-all duration-500 transform opacity-100 translate-y-0">
+                 <span class="gold-text-animated">Paused</span>
+               </span>
+            </div>
+          </div>
+
+          <!-- Botón Calendario -->
+          <button id="btn-toggle-calendar" class="glass-panel w-[120px] h-[120px] rounded-[2rem] flex flex-col items-center justify-center gap-3 transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] group hover:scale-[0.98] active:scale-[0.95] hover:bg-white/5 hover:border-[#D4AF37]/20 hover:shadow-[0_0_20px_rgba(212,175,55,0.15)]">
+            <!-- Icono Calendar -->
+            <svg class="text-[#D4AF37] group-hover:text-[#FFDF00] group-hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.5)] transition-all duration-400 group-hover:scale-110" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            <span class="text-xs gold-text-animated opacity-70 font-medium tracking-wider group-hover:opacity-100 transition-opacity">CALENDAR</span>
+          </button>
+        </div>
+
+        <!-- Fila Inferior (Reproductor) -->
+        <div class="glass-panel rounded-[2rem] p-6 flex flex-col gap-4 mt-2 border-t border-[#D4AF37]/15 hover:shadow-[0_5px_30px_rgba(0,0,0,0.5),_0_0_20px_rgba(212,175,55,0.15),_inset_0_0_0_1px_rgba(212,175,55,0.1)] transition-all duration-500">
+          <div class="flex flex-col md:flex-row items-center gap-6">
+            
+            <button id="btn-play-pause" class="w-16 h-16 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#8a6d20] flex items-center justify-center text-black transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] flex-shrink-0 hover:brightness-110 active:scale-[0.93] paused-pulse">
+              <span id="icon-play" class="ml-1">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              </span>
+              <span id="icon-pause" class="hidden">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+              </span>
+            </button>
+
+            <div class="flex-1 w-full flex flex-col gap-2 overflow-hidden">
+              <div class="flex justify-between items-center text-xs font-medium tracking-wide transition-colors duration-300 w-full gap-2">
+                <span id="time-current" class="gold-text-animated whitespace-nowrap opacity-60">0:00</span>
+                <span id="song-title" class="text-[10px] md:text-xs tracking-widest uppercase transition-all duration-300 gold-text-animated truncate flex-1 text-center px-1 opacity-60" title="Phil Collins - Another Day In Paradise">
+                  Phil Collins - Another Day In Paradise
+                </span>
+                <span id="time-total" class="gold-text-animated whitespace-nowrap opacity-60">0:00</span>
+              </div>
+              <div class="relative w-full flex items-center h-4 group">
+                <input id="seek-bar" type="range" min="0" max="100" value="0" class="w-full absolute z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer" />
+                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden absolute pointer-events-none shadow-inner">
+                  <div id="seek-fill" class="h-full rounded-full transition-all duration-100 bg-gradient-to-r from-[#8a6d20] to-[#D4AF37]" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-center md:justify-start gap-3 w-full md:w-auto md:min-w-[140px] pt-4 md:pt-0 border-t md:border-t-0 md:border-l border-white/5 pl-0 md:pl-4 mt-2 md:mt-0">
+              <button id="btn-mute" class="text-gray-400 hover:text-[#D4AF37] hover:scale-110 hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] active:scale-95 transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)]">
+                <span id="icon-vol-up">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>
+                </span>
+                <span id="icon-vol-muted" class="hidden">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+                </span>
+              </button>
+              <input id="volume-bar" type="range" min="0" max="1" step="0.01" value="0.7" class="w-full max-w-[120px] md:w-24 cursor-pointer" />
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- OVERLAY CALENDARIO -->
+      <div id="calendar-wrapper" class="hidden-state">
+        <div id="calendar-backdrop" class="fixed inset-0 z-40 bg-black/40 backdrop-blur-md transition-opacity duration-500 ease-out opacity-0"></div>
+        <div id="calendar-panel" class="fixed md:absolute top-1/2 left-1/2 md:top-6 md:right-6 md:left-auto md:translate-x-0 md:translate-y-0 -translate-x-1/2 -translate-y-1/2 z-50 glass-panel p-6 rounded-[2rem] shadow-[0_30px_60px_rgba(0,0,0,0.6),_0_0_20px_rgba(212,175,55,0.15),_inset_0_0_0_1px_rgba(212,175,55,0.15)] w-[calc(100vw-2rem)] max-w-[320px] md:w-[300px] transition-all duration-500 ease-out opacity-0 scale-95 md:translate-y-[-20px]">
+          <button id="btn-close-calendar" class="absolute top-4 right-4 text-gray-400 hover:text-[#D4AF37] transition-all duration-300 hover:bg-white/10 p-1.5 rounded-full hover:scale-110 active:scale-90 hover:shadow-[0_0_10px_rgba(212,175,55,0.2)]">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+          <div id="calendar-content" class="mt-4">
+            <!-- Renderizado por JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- FIRMA -->
+      <div class="mt-8 z-10 animate-entrada text-center" style="animation-delay: 0.2s;">
+        <p class="text-[9px] md:text-[10px] tracking-[0.4em] text-white/20 hover:text-[#D4AF37]/80 hover:drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] transition-all duration-500 cursor-default uppercase font-light">
+          ©2026 XATSPACE DESIGN EAM96
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================
+       LOGICA JAVASCRIPT (VANNILA JS)
+       ========================================= -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /* =======================================
+         1. ANTI-INSPECCIÓN BÁSICA
+         ======================================= */
+      document.addEventListener('contextmenu', e => e.preventDefault());
+      document.addEventListener('keydown', e => {
+        if (e.key === 'F12' || 
+            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'C' || e.key === 'c' || e.key === 'J' || e.key === 'j')) || 
+            (e.ctrlKey && (e.key === 'U' || e.key === 'u'))) {
+          e.preventDefault();
+        }
+      });
+
+      /* =======================================
+         2. EFECTO PARALLAX
+         ======================================= */
+      const parallaxElements = document.querySelectorAll('.parallax-element');
+      document.addEventListener('mousemove', (e) => {
+        const x = (e.clientX / window.innerWidth - 0.5) * 15;
+        const y = (e.clientY / window.innerHeight - 0.5) * 15;
+        parallaxElements.forEach(el => {
+          el.style.setProperty('--mouse-x', `${x}px`);
+          el.style.setProperty('--mouse-y', `${y}px`);
+        });
+      });
+
+      /* =======================================
+         3. SISTEMA DE PARTÍCULAS (CANVAS)
+         ======================================= */
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let animationFrameId;
+      
+      const setCanvasSize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      };
+      setCanvasSize();
+      window.addEventListener('resize', setCanvasSize);
+
+      const glitter = Array.from({ length: 60 }, () => ({
+        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+        size: Math.random() * 1.2 + 0.4,
+        speedY: (Math.random() * -0.3) - 0.1, speedX: (Math.random() * 0.1) - 0.05,
+        baseOpacity: Math.random() * 0.7 + 0.3, 
+        blur: Math.random() > 0.85 ? 1.5 : 0,
+        angle: Math.random() * Math.PI * 2, angularSpeed: Math.random() * 0.005 + 0.002,
+        amplitude: Math.random() * 0.4 + 0.1
+      }));
+
+      const flashes = Array.from({ length: 25 }, () => ({
+        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+        maxSize: Math.random() * 1.5 + 1, phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.015 + 0.008, delay: Math.random() * 150
+      }));
+
+      const trailParticles = [];
+      let lastMouseX = -100, lastMouseY = -100;
+
+      const handleCanvasMouseMove = (e) => {
+        const vx = (e.clientX - lastMouseX) * 0.08;
+        const vy = (e.clientY - lastMouseY) * 0.08;
+
+        if (lastMouseX !== -100) {
+          const numParticles = Math.random() > 0.4 ? 2 : 1; 
+          for (let i = 0; i < numParticles; i++) {
+            trailParticles.push({
+              x: e.clientX + (Math.random() * 10 - 5), y: e.clientY + (Math.random() * 10 - 5),
+              size: Math.random() * 1.5 + 0.5,
+              speedX: vx + (Math.random() * 1.5 - 0.75), speedY: vy + (Math.random() * 1.5 - 0.75) - 0.5,
+              life: 1, decay: Math.random() * 0.03 + 0.015, blur: Math.random() > 0.6 ? 1.5 : 0
+            });
+          }
+        }
+        if (trailParticles.length > 120) trailParticles.splice(0, trailParticles.length - 120);
+        lastMouseX = e.clientX; lastMouseY = e.clientY;
+      };
+      window.addEventListener('mousemove', handleCanvasMouseMove);
+
+      const drawCanvas = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        flashes.forEach(f => {
+          if (f.delay > 0) { f.delay--; return; }
+          f.phase += f.speed;
+          if (f.phase > Math.PI) {
+            f.phase = 0; f.x = Math.random() * canvas.width; f.y = Math.random() * canvas.height; f.delay = Math.random() * 200 + 50;
+          }
+          const scale = Math.sin(f.phase);
+          if (scale > 0) {
+            const radius = f.maxSize * scale * 2;
+            const alpha = scale * 0.8;
+            const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, radius);
+            grad.addColorStop(0, `rgba(255, 255, 255, ${alpha})`);
+            grad.addColorStop(0.3, `rgba(255, 215, 0, ${alpha * 0.7})`);
+            grad.addColorStop(1, `rgba(255, 215, 0, 0)`);
+            ctx.beginPath(); ctx.arc(f.x, f.y, radius, 0, Math.PI * 2); ctx.fillStyle = grad; ctx.fill();
+          }
+        });
+
+        glitter.forEach(p => {
+          p.angle += p.angularSpeed; p.x += p.speedX + Math.sin(p.angle) * p.amplitude; p.y += p.speedY;
+          let edgeFade = 1;
+          if (p.y > canvas.height - 50) edgeFade = (canvas.height - p.y) / 50;
+          if (p.y < 50) edgeFade = Math.max(0, p.y / 50);
+          
+          if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+          if (p.x < -10) p.x = canvas.width + 10;
+          if (p.x > canvas.width + 10) p.x = -10;
+
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 215, 0, ${p.baseOpacity * edgeFade})`;
+          if (p.blur > 0) ctx.filter = `blur(${p.blur}px)`;
+          ctx.fill();
+          if (p.blur > 0) ctx.filter = 'none';
+        });
+
+        for (let i = trailParticles.length - 1; i >= 0; i--) {
+          const p = trailParticles[i];
+          p.x += p.speedX; p.y += p.speedY; p.life -= p.decay; 
+          p.speedX *= 0.90; p.speedY *= 0.90;
+          if (p.life <= 0) { trailParticles.splice(i, 1); continue; }
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 223, 0, ${p.life * 0.9})`; 
+          if (p.blur > 0) ctx.filter = `blur(${p.blur}px)`;
+          ctx.fill();
+          if (p.blur > 0) ctx.filter = 'none';
+        }
+        animationFrameId = requestAnimationFrame(drawCanvas);
+      };
+      drawCanvas();
+
+      /* =======================================
+         4. ESTADO DE LA APLICACIÓN Y TRANSICIÓN
+         ======================================= */
+      const btnEnter = document.getElementById('btn-enter');
+      const landingPage = document.getElementById('landing-page');
+      const mainDashboard = document.getElementById('main-dashboard');
+      const bgAudio = document.getElementById('bg-audio');
+
+      let isPlaying = false;
+      let isMuted = false;
+
+      btnEnter.addEventListener('click', () => {
+        // Reproducir audio (El evento user-interaction permite autoplay)
+        bgAudio.volume = 0.7;
+        bgAudio.play().then(() => {
+          isPlaying = true;
+          updatePlayerUI();
+          updateEqUI();
+        }).catch(e => console.log("Audio requires interaction or correct path.", e));
+
+        // Fade out
+        landingPage.style.opacity = '0';
+        setTimeout(() => {
+          landingPage.classList.add('hidden-state');
+          mainDashboard.classList.remove('hidden-state');
+          
+          // Reiniciar animaciones de entrada en el dashboard
+          document.querySelectorAll('.animate-entrada').forEach(el => {
+            el.style.animation = 'none';
+            el.offsetHeight; // Reflow
+            el.style.animation = null;
+          });
+        }, 700);
+      });
+
+      /* =======================================
+         5. RELOJ EN TIEMPO REAL
+         ======================================= */
+      const clockTime = document.getElementById('clock-time');
+      const clockDate = document.getElementById('clock-date');
+      
+      const updateClock = () => {
+        const now = new Date();
+        clockTime.innerHTML = `${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} <span class="text-sm gold-text-animated opacity-80">${now.getSeconds().toString().padStart(2, '0')}</span>`;
+        clockDate.innerText = now.toLocaleDateString('es-ES', { weekday: 'long', month: 'short', day: 'numeric' });
+      };
+      setInterval(updateClock, 1000);
+      updateClock();
+
+      /* =======================================
+         6. ECUALIZADOR (Generación CSS Variables)
+         ======================================= */
+      const eqContainer = document.getElementById('eq-container');
+      const eqBarsData = [];
+      for(let i=0; i<12; i++){
+        const bar = document.createElement('div');
+        bar.className = 'w-1.5 md:w-2 bg-gradient-to-t from-[#AA771C] via-[#D4AF37] to-[#FFF3A6] rounded-t-full opacity-100 will-change-transform';
+        const animName = `eq${Math.floor(Math.random() * 3) + 1}`;
+        const duration = 0.5 + Math.random() * 0.7;
+        const delay = Math.random() * -2;
+        
+        bar.style.height = '100%';
+        bar.style.transformOrigin = 'bottom';
+        bar.style.transform = 'scaleY(0.2)';
+        
+        eqContainer.appendChild(bar);
+        eqBarsData.push({ element: bar, animString: `${animName} ${duration}s cubic-bezier(0.4, 0, 0.2, 1) ${delay}s infinite` });
+      }
+
+      const updateEqUI = () => {
+        eqBarsData.forEach(barData => {
+          if(isPlaying) {
+            barData.element.style.animation = barData.animString;
+            barData.element.style.transform = 'scaleY(1)';
+            barData.element.style.transition = 'none';
+          } else {
+            barData.element.style.animation = 'none';
+            barData.element.style.transform = 'scaleY(0.2)';
+            barData.element.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
+          }
+        });
+
+        document.getElementById('status-playing').style.opacity = isPlaying ? '1' : '0';
+        document.getElementById('status-playing').style.transform = isPlaying ? 'translateY(0)' : 'translateY(4px)';
+        document.getElementById('status-paused').style.opacity = isPlaying ? '0' : '1';
+        document.getElementById('status-paused').style.transform = isPlaying ? 'translateY(-4px)' : 'translateY(0)';
+      };
+
+      /* =======================================
+         7. REPRODUCTOR DE MÚSICA
+         ======================================= */
+      const btnPlayPause = document.getElementById('btn-play-pause');
+      const iconPlay = document.getElementById('icon-play');
+      const iconPause = document.getElementById('icon-pause');
+      const timeCurrent = document.getElementById('time-current');
+      const timeTotal = document.getElementById('time-total');
+      const songTitle = document.getElementById('song-title');
+      const seekBar = document.getElementById('seek-bar');
+      const seekFill = document.getElementById('seek-fill');
+      
+      const btnMute = document.getElementById('btn-mute');
+      const iconVolUp = document.getElementById('icon-vol-up');
+      const iconVolMuted = document.getElementById('icon-vol-muted');
+      const volumeBar = document.getElementById('volume-bar');
+
+      const formatTimeStr = (seconds) => {
+        if (!seconds || isNaN(seconds)) return "0:00";
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60);
+        return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+      };
+
+      const updatePlayerUI = () => {
+        if(isPlaying){
+          iconPlay.classList.add('hidden');
+          iconPause.classList.remove('hidden');
+          btnPlayPause.classList.remove('paused-pulse');
+          btnPlayPause.classList.add('shadow-[0_0_20px_rgba(212,175,55,0.4)]', 'scale-[0.98]');
+          seekFill.classList.add('progress-gradient');
+          seekFill.classList.remove('bg-gradient-to-r', 'from-[#8a6d20]', 'to-[#D4AF37]');
+          timeCurrent.classList.remove('opacity-60');
+          timeTotal.classList.remove('opacity-60');
+          songTitle.classList.remove('opacity-60');
+          songTitle.classList.add('drop-shadow-[0_0_8px_rgba(255,215,0,0.3)]');
+        } else {
+          iconPlay.classList.remove('hidden');
+          iconPause.classList.add('hidden');
+          btnPlayPause.classList.add('paused-pulse');
+          btnPlayPause.classList.remove('shadow-[0_0_20px_rgba(212,175,55,0.4)]', 'scale-[0.98]');
+          seekFill.classList.remove('progress-gradient');
+          seekFill.classList.add('bg-gradient-to-r', 'from-[#8a6d20]', 'to-[#D4AF37]');
+          timeCurrent.classList.add('opacity-60');
+          timeTotal.classList.add('opacity-60');
+          songTitle.classList.add('opacity-60');
+          songTitle.classList.remove('drop-shadow-[0_0_8px_rgba(255,215,0,0.3)]');
+        }
+        updateEqUI();
+      };
+
+      btnPlayPause.addEventListener('click', () => {
+        if (isPlaying) bgAudio.pause();
+        else bgAudio.play().catch(e => console.log(e));
+        isPlaying = !isPlaying;
+        updatePlayerUI();
+      });
+
+      bgAudio.addEventListener('loadedmetadata', () => {
+        timeTotal.innerText = formatTimeStr(bgAudio.duration);
+      });
+
+      bgAudio.addEventListener('timeupdate', () => {
+        if(!bgAudio.duration) return;
+        const progress = (bgAudio.currentTime / bgAudio.duration) * 100;
+        seekBar.value = progress;
+        seekFill.style.width = `${progress}%`;
+        timeCurrent.innerText = formatTimeStr(bgAudio.currentTime);
+      });
+
+      bgAudio.addEventListener('ended', () => {
+        isPlaying = false;
+        updatePlayerUI();
+      });
+
+      seekBar.addEventListener('input', (e) => {
+        if(bgAudio.duration){
+          const seekTo = (e.target.value / 100) * bgAudio.duration;
+          bgAudio.currentTime = seekTo;
+          seekFill.style.width = `${e.target.value}%`;
+        }
+      });
+
+      const updateVolumeUI = () => {
+        if (isMuted || bgAudio.volume === 0) {
+          iconVolUp.classList.add('hidden');
+          iconVolMuted.classList.remove('hidden');
+        } else {
+          iconVolUp.classList.remove('hidden');
+          iconVolMuted.classList.add('hidden');
+        }
+        volumeBar.value = isMuted ? 0 : bgAudio.volume;
+      };
+
+      btnMute.addEventListener('click', () => {
+        isMuted = !isMuted;
+        bgAudio.volume = isMuted ? 0 : volumeBar.value || 0.7; // Restore last valid volume or default
+        updateVolumeUI();
+      });
+
+      volumeBar.addEventListener('input', (e) => {
+        bgAudio.volume = e.target.value;
+        isMuted = bgAudio.volume === 0;
+        updateVolumeUI();
+      });
+
+      /* =======================================
+         8. CALENDARIO OVERLAY
+         ======================================= */
+      const btnToggleCalendar = document.getElementById('btn-toggle-calendar');
+      const calendarWrapper = document.getElementById('calendar-wrapper');
+      const calendarBackdrop = document.getElementById('calendar-backdrop');
+      const calendarPanel = document.getElementById('calendar-panel');
+      const btnCloseCalendar = document.getElementById('btn-close-calendar');
+      const calendarContent = document.getElementById('calendar-content');
+      
+      let calDate = new Date();
+
+      const renderCalendarContent = () => {
+        const month = calDate.getMonth();
+        const year = calDate.getFullYear();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const firstDay = new Date(year, month, 1).getDay();
+        
+        const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+        const dayNames = ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"];
+        const today = new Date();
+
+        let html = `
+          <div class="flex flex-col gap-4">
+            <div class="flex justify-between items-center text-[#D4AF37]">
+              <button id="cal-prev" class="p-1 hover:bg-white/10 rounded-full transition-all duration-300 active:scale-90 hover:shadow-[0_0_8px_rgba(212,175,55,0.2)] will-change-transform">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+              </button>
+              <span class="font-semibold text-lg gold-text-animated">${monthNames[month]} ${year}</span>
+              <button id="cal-next" class="p-1 hover:bg-white/10 rounded-full transition-all duration-300 active:scale-90 hover:shadow-[0_0_8px_rgba(212,175,55,0.2)] will-change-transform">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </button>
+            </div>
+            <div class="grid grid-cols-7 gap-1">
+        `;
+
+        dayNames.forEach(day => { html += `<div class="text-xs text-center gold-text-animated opacity-60 font-medium pb-2">${day}</div>`; });
+        for (let i = 0; i < firstDay; i++) { html += `<div class="p-2"></div>`; }
+        for (let d = 1; d <= daysInMonth; d++) {
+          const isToday = d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+          const classes = isToday 
+            ? 'bg-gradient-to-tr from-[#D4AF37] to-[#FFDF00] text-black font-bold shadow-[0_0_12px_rgba(212,175,55,0.4)]' 
+            : 'gold-text-animated opacity-70 hover:opacity-100 hover:bg-white/10 hover:shadow-[0_0_10px_rgba(212,175,55,0.15)]';
+          html += `<div class="p-2 text-center text-sm rounded-full transition-all duration-300 ease-[cubic-bezier(0.25,1,0.5,1)] hover:scale-110 active:scale-95 will-change-transform ${classes}">${d}</div>`;
+        }
+        
+        html += `</div></div>`;
+        calendarContent.innerHTML = html;
+
+        document.getElementById('cal-prev').addEventListener('click', () => {
+          calDate.setMonth(calDate.getMonth() - 1);
+          renderCalendarContent();
+        });
+        document.getElementById('cal-next').addEventListener('click', () => {
+          calDate.setMonth(calDate.getMonth() + 1);
+          renderCalendarContent();
+        });
+      };
+
+      const openCalendar = () => {
+        calDate = new Date(); // reset to current month on open
+        renderCalendarContent();
+        calendarWrapper.classList.remove('hidden-state');
+        
+        // Trigger animations
+        requestAnimationFrame(() => {
+          calendarBackdrop.style.opacity = '1';
+          calendarPanel.style.opacity = '1';
+          calendarPanel.style.transform = 'translate(-50%, -50%) scale(1)';
+        });
+      };
+
+      const closeCalendar = () => {
+        calendarBackdrop.style.opacity = '0';
+        calendarPanel.style.opacity = '0';
+        calendarPanel.style.transform = 'translate(-50%, calc(-50% - 20px)) scale(0.95)';
+        
+        setTimeout(() => {
+          calendarWrapper.classList.add('hidden-state');
+        }, 500);
+      };
+
+      btnToggleCalendar.addEventListener('click', openCalendar);
+      btnCloseCalendar.addEventListener('click', closeCalendar);
+      calendarBackdrop.addEventListener('click', closeCalendar);
+
+    });
+  </script>
+</body>
+</html>
